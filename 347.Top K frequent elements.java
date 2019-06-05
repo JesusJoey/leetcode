@@ -27,7 +27,7 @@ public List<Integer> topKFrequent(int[] nums, int k) {
 	return res;
 }
 
-// use maxHeap. Put entry into maxHeap so we can always poll a number with largest frequency
+// use maxHeap. Put entry into maxHeap so we can always poll a mnuber with largest frequency
 public class Solution {
     public List<Integer> topKFrequent(int[] nums, int k) {
         Map<Integer, Integer> map = new HashMap<>();
@@ -42,7 +42,7 @@ public class Solution {
         }
         
         List<Integer> res = new ArrayList<>();
-        while(res.size()<k){
+        while(res.size() < k){
             Map.Entry<Integer, Integer> entry = maxHeap.poll();
             res.add(entry.getKey());
         }
