@@ -1,3 +1,18 @@
+/**
+269. Alien Dictionary
+
+Input:
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+
+Output: "wertf"
+*/
+
 private final int N = 26;
 public String alienOrder(String[] words) {
     boolean[][] adj = new boolean[N][N];
