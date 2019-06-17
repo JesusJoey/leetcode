@@ -36,3 +36,29 @@ class Solution {
         return jump[0];
     }
 }
+
+/**
+45.Jump game II
+
+Input: [2,3,1,1,4]
+Output: 2
+Explanation: The minimum number of jumps to reach the last index is 2.
+    Jump 1 step from index 0 to 1, then 3 steps to the last index.
+*/
+public int jump(int[] nums) {
+    int maxReach = nums[0];
+    int edge = 0 , step = 0;
+
+    for (int i = 1; i < nums.length; i++) {
+        if (i > edge) {
+            step++;
+            edge = maxReach;
+            if (edge > num.length - 1)
+                return step;
+        }
+        maxReach = Math.max(maxReach, nums[i] + i);
+        if (maxReach < i)
+            return -1;
+    }
+    return step;
+}
