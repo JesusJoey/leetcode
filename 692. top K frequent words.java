@@ -34,6 +34,7 @@ public List<String> topKFrequent(String[] words, int k) {
 
 	for (int i = buckets.length-1; i>=0; i--) {
 		int j = 0;
+		//如果不考虑duplicate则不需要sort
 		if (buckets[i] != null) {
 			Collections.sort(buckets[i]);
 		}
@@ -45,6 +46,13 @@ public List<String> topKFrequent(String[] words, int k) {
 		}
 		if (k == 0) break;
 	}
+	/*
+	for (int pos = bucket.length - 1; pos >= 0 && res.size() < k; pos--) {
+		if (bucket[pos] != null) {
+			res.addAll(bucket[pos]);
+		}
+	}
+	*/
 	return res;
 }
 
