@@ -1,73 +1,78 @@
-public class LRUCache {
-    private class Node{
-        int key, value;
-        Node prev, next;
-        Node(int k, int v){
-            this.key = k;
-            this.value = v;
-        }
-        Node(){
-            this(0, 0);
-        }
-    }
-    private int capacity, count;
-    private Map<Integer, Node> map;
-    private Node head, tail;
+1.The key to solve this problem is using a double linked list which enables us to quickly move nodes.
+2.The LRU cache is a hash table of keys and double linked nodes. The hash table makes the time of get() to be O(1). 
+The list of double linked nodes make the nodes adding/removal operations O(1).
+
+class Node {
+    int key;
+    int value;
+    Node prev;
+    Node next;
     
+    public Node(int key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+class LRUCache {
+    
+    HashMap<Integer, Node> map;
+    int capacity, count;
+    Node head, tail;
+
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        this.count = 0;
         map = new HashMap<>();
-        head = new Node();
-        tail = new Node();
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
         head.next = tail;
         tail.prev = head;
+        head.prev = null;
+        tail.next = null;
+        
     }
     
     public int get(int key) {
-        Node n = map.get(key);
-        if(null==n){
-            return -1;
+        if (map.get(key) != null) {
+            Node node = map.get(key);
+            int res = node.value;
+            delete(node);
+            addToHead(node);
+            return res;
         }
-        update(n);
-        return n.value;
+        return -1;
     }
     
-    public void set(int key, int value) {
-        Node n = map.get(key);
-        if(null==n){
-            n = new Node(key, value);
-            map.put(key, n);
-            add(n);
-            ++count;
-        }
-        else{
-            n.value = value;
-            update(n);
-        }
-        if(count>capacity){
-            Node toDel = tail.prev;
-            remove(toDel);
-            map.remove(toDel.key);
-            --count;
+    public void put(int key, int value) {
+        if (map.get(key) != null) {
+            Node node = map.get(key);
+            node.value = value;
+            delete(node);
+            addToHead(node);
+        } else {
+            Node node = new Node(key, value);
+            map.put(key, node);
+            if (count < capacity) {
+                count++;
+                addToHead(node);
+            } else {
+                Node toDel = tail.prev;
+                map.remove(toDel.key);
+                delete(toDel);
+                addToHead(node);
+            }
         }
     }
     
-    private void update(Node node){
-        remove(node);
-        add(node);
-    }
-    private void add(Node node){
-        Node after = head.next;
-        head.next = node;
+    private void addToHead(Node node) {
+        node.next = head.next;
+        node.next.prev = node;
         node.prev = head;
-        node.next = after;
-        after.prev = node;
+        head.next = node;
     }
     
-    private void remove(Node node){
-        Node before = node.prev, after = node.next;
-        before.next = after;
-        after.prev = before;
+    private void delete(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
     }
+    
 }
