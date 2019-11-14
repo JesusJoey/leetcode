@@ -1,0 +1,69 @@
+/*
+Josephus Circle
+
+1) Create a circular linked list of size n.
+2) Traverse through linked list and one by one delete every m-th node until there is one node left.
+3) Return value of the only left node.
+*/
+
+public class Solution { 
+      
+    // Node class to store data  
+    static class Node 
+    { 
+        public int data ; 
+        public Node next; 
+        public Node( int data ) 
+        { 
+            this.data = data; 
+        } 
+    } 
+      
+    /* Function to find the only person left 
+    after one in every m-th node is killed 
+    in a circle of n nodes */
+    static void getJosephusPosition(int m, int n) 
+    { 
+        // Create a circular linked list of 
+        // size N. 
+        Node head = new Node(1); 
+        Node prev = head; 
+        for(int i = 2; i <= n; i++) 
+        { 
+            prev.next = new Node(i); 
+            prev = prev.next; 
+        } 
+          
+        // Connect last node to first 
+        prev.next = head; 
+          
+        /* while only one node is left in the 
+        linked list*/
+        Node ptr1 = head, ptr2 = head; 
+          
+        while(ptr1.next != ptr1) 
+        { 
+              
+            // Find m-th node 
+            int count = 1; 
+            while(count != m) 
+            { 
+                ptr2 = ptr1; 
+                ptr1 = ptr1.next; 
+                count++; 
+            } 
+              
+            /* Remove the m-th node */
+            ptr2.next = ptr1.next; 
+            ptr1 = ptr2.next; 
+        } 
+        return ptr1.data; 
+    } 
+      
+    /* Driver program to test above functions */
+    public static void main(String args[]) 
+    { 
+        int n = 14, m = 2; 
+        getJosephusPosition(m, n); 
+    } 
+} 
